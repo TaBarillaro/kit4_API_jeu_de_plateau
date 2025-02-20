@@ -1,11 +1,13 @@
 package com.example.kit4_api;
 
 import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Service
 public class GameCatalogImpl implements GameCatalog {
 
     // instance de la classe TicTacToeGameFactory
@@ -17,7 +19,7 @@ public class GameCatalogImpl implements GameCatalog {
     }
 
     @Override
-    public Collection<String> getGameIdentifiers() {
+    public Collection<String> getGameIdentifier() {
         // Créer une collection d’identificateurs de jeu
         Collection<String> gameIdentifiers = new ArrayList<>();
 
