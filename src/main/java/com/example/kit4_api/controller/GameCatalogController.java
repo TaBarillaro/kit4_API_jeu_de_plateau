@@ -1,4 +1,4 @@
-package com.example.kit4_api.Controller;
+package com.example.kit4_api.controller;
 
 import com.example.kit4_api.GameCatalog;
 import org.springframework.beans.factory.annotation.Autowired;

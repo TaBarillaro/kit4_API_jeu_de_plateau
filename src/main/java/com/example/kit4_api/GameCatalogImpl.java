@@ -11,7 +11,7 @@ import java.util.List;
 public class GameCatalogImpl implements GameCatalog {
 
     // instance de la classe TicTacToeGameFactory
-    private TicTacToeGameFactory ticTacToeGameFactory;
+    private final TicTacToeGameFactory ticTacToeGameFactory;
 
     // constructeur
     public GameCatalogImpl() {

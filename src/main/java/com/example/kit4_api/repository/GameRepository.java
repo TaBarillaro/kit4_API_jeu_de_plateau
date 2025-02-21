@@ -1,4 +1,4 @@
-package com.example.kit4_api.Repository;
+package com.example.kit4_api.repository;
 
 import org.springframework.stereotype.Repository;
 
