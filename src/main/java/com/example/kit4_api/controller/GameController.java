@@ -2,6 +2,7 @@ package com.example.kit4_api.controller;
 
 import com.example.kit4_api.dto.GameDto;
 import com.example.kit4_api.dto.GameFilterDto;
+import com.example.kit4_api.dto.SingleGameDto;
 import com.example.kit4_api.service.GameService;
 import com.example.kit4_api.dto.TypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,17 @@ public class GameController {
         }
 
         return ResponseEntity.ok(filteredGames);
+    }
+
+    // methode pour afficher une partie
+    @GetMapping("/{gameId}")
+    public ResponseEntity<SingleGameDto> getGame(@PathVariable String gameId) {
+        GameDto game = gameService.getGame(gameId);
+        if (game == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        SingleGameDto singleGameDto = new SingleGameDto(game.gameId());
+        return ResponseEntity.ok(singleGameDto);
     }
 }

@@ -35,11 +35,15 @@ public class GameService {
 
     static {
         // je crée des fauses parties
-        games.add(new GameDto("Harry Potter", 8, 6, false)); // partie en cours
+        games.add(new GameDto("Harry_Potter", 8, 6, false)); // partie en cours
         games.add(new GameDto("ticTacToe", 3, 3, true)); // partie fini
     }
 
     public List<GameDto> getAllGames() {
         return games;
+    }
+
+    public GameDto getGame(String gameId) {
+        return games.stream().filter(gameDto -> gameDto.gameId().equals(gameId)).findFirst().orElse(null);
     }
 }
