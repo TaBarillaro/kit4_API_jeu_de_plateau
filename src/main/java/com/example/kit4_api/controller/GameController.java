@@ -8,6 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/games")
@@ -17,6 +21,7 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
+    // methode pour créer une partie
     @PostMapping("/")
     public ResponseEntity<GameDto> createGame(@RequestBody TypeDto typeDto) {
         GameDto result = gameService.createGame(typeDto);
@@ -29,4 +34,17 @@ public class GameController {
         }
     }
 
+    // methode pour afficher l'hystorique
+    @GetMapping
+    public ResponseEntity<List<GameDto>> getAllGames(@RequestParam(name = "ended", required = false) Boolean ended, @RequestHeader("X-UserId") String userId) {
+        // liste des parties
+        List<GameDto> allGames = gameService.getAllGames();
+
+        List<GameDto> filteredGames = allGames;
+        if (ended != null) {
+            filteredGames = allGames.stream().filter(game -> game.ended() == ended).collect(Collectors.toList());
+        }
+
+        return ResponseEntity.ok(filteredGames);
+    }
 }

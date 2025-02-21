@@ -7,6 +7,9 @@ import com.example.kit4_api.TypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class GameService {
 
@@ -23,7 +26,20 @@ public class GameService {
     public GameDto createGame(TypeDto typeDto) {
         String gameId = typeDto.gameId();
 
-        GameDto gameDto = new GameDto(typeDto.gameId(), typeDto.width(), typeDto.height());
+        GameDto gameDto = new GameDto(typeDto.gameId(), typeDto.width(), typeDto.height(), typeDto.ended());
         return gameDto;
+    }
+
+    // fausse liste de partie pour les tests
+    private static final List<GameDto> games = new ArrayList<>();
+
+    static {
+        // je crée des fauses parties
+        games.add(new GameDto("Harry Potter", 8, 6, false)); // partie en cours
+        games.add(new GameDto("ticTacToe", 3, 3, true)); // partie fini
+    }
+
+    public List<GameDto> getAllGames() {
+        return games;
     }
 }
