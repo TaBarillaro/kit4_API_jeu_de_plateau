@@ -1,14 +1,14 @@
 package com.example.kit4_api.controller;
 
 import com.example.kit4_api.dto.GameDto;
+import com.example.kit4_api.dto.GameFilterDto;
 import com.example.kit4_api.service.GameService;
-import com.example.kit4_api.TypeDto;
+import com.example.kit4_api.dto.TypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,13 +36,13 @@ public class GameController {
 
     // methode pour afficher l'hystorique
     @GetMapping
-    public ResponseEntity<List<GameDto>> getAllGames(@RequestParam(name = "ended", required = false) Boolean ended, @RequestHeader("X-UserId") String userId) {
+    public ResponseEntity<List<GameDto>> getAllGames(GameFilterDto filter) {
         // liste des parties
         List<GameDto> allGames = gameService.getAllGames();
 
         List<GameDto> filteredGames = allGames;
-        if (ended != null) {
-            filteredGames = allGames.stream().filter(game -> game.ended() == ended).collect(Collectors.toList());
+        if (filter.ended() != null) {
+            filteredGames = allGames.stream().filter(game -> Boolean.valueOf(game.ended()) == filter.ended()).collect(Collectors.toList());
         }
 
         return ResponseEntity.ok(filteredGames);

@@ -3,7 +3,7 @@ package com.example.kit4_api.service;
 import com.example.kit4_api.GameCatalog;
 import com.example.kit4_api.dto.GameDto;
 import com.example.kit4_api.repository.GameRepository;
-import com.example.kit4_api.TypeDto;
+import com.example.kit4_api.dto.TypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
