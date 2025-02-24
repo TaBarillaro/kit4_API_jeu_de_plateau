@@ -21,8 +21,12 @@ public class GameController {
 
     // methode pour créer une partie
     @PostMapping("/")
-    public ResponseEntity<GameDto> createGame(@RequestBody TypeDto typeDto) {
-        GameDto result = gameService.createGame(typeDto);
+    public ResponseEntity<GameDto> createGame(@RequestHeader("X-UserId") String userId, @RequestBody TypeDto typeDto) {
+
+        gameService.setCurrentPlayerId(userId);
+
+        // on crée le jeu
+        GameDto result = gameService.createGame(userId, typeDto);
 
         if (result == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -34,9 +38,9 @@ public class GameController {
 
     // methode pour afficher l'hystorique
     @GetMapping
-    public ResponseEntity<List<GameDto>> getAllGames(GameFilterDto filter) {
+    public ResponseEntity<List<GameDto>> getAllGames(GameFilterDto filter, @RequestHeader("X-UserId") String userId) {
         // liste des parties
-        List<GameDto> allGames = gameService.getAllGames();
+        List<GameDto> allGames = gameService.getAllGamesForUsers(userId);
 
         List<GameDto> filteredGames = allGames;
         if (filter.ended() != null) {
@@ -73,10 +77,10 @@ public class GameController {
 
     // methode pour jouer un coup
 //    @PutMapping("/{gameId}/moves")
-//    public ResponseEntity<GameDto> makeMove(@PathVariable String gameId, @RequestBody MoveDto moveDto) {
+//    public ResponseEntity<GameDto> makeMove(@PathVariable String gameId, @RequestBody MoveDto moveDto, @RequestHeader("X-UserId") String userId) {
 //        try {
 //
-//            GameDto updatedGame = gameService.makeMove(gameId, moveDto);
+//            GameDto updatedGame = gameService.makeMove(gameId, moveDto, userId);
 //
 //            if (updatedGame != null) {
 //                return ResponseEntity.ok(updatedGame);
