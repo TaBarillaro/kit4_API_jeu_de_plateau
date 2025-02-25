@@ -1,6 +1,6 @@
 package com.example.kit4_api.controller;
 
-import com.example.kit4_api.GameCatalog;
+import com.example.kit4_api.service.GameCatalog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

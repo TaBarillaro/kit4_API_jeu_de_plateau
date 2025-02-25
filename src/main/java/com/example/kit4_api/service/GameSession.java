@@ -1,18 +1,20 @@
 package com.example.kit4_api.service;
 
+import java.util.UUID;
+
 public class GameSession {
-    private String currentPlayerId;
+    private UUID currentPlayerId;
 
     // Constructeur
-    public GameSession(String currentPlayerId) {
+    public GameSession(UUID currentPlayerId) {
         this.currentPlayerId = currentPlayerId;
     }
 
-    public String getCurrentPlayerId() {
+    public UUID getCurrentPlayerId() {
         return currentPlayerId;
     }
 
-    public void setCurrentPlayerId(String currentPlayerId) {
+    public void setCurrentPlayerId(UUID currentPlayerId) {
         this.currentPlayerId = currentPlayerId;
     }
 }

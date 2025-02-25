@@ -1,4 +1,4 @@
-package com.example.kit4_api;
+package com.example.kit4_api.service;
 
 import java.util.Collection;
 

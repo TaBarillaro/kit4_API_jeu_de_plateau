@@ -1,14 +1,18 @@
 package com.example.kit4_api.controller;
 
 import com.example.kit4_api.dto.*;
-import com.example.kit4_api.service.GameService;
+import com.example.kit4_api.service.GameServiceImpl;
+import fr.le_campus_numerique.square_games.engine.Game;
+import fr.le_campus_numerique.square_games.engine.GameStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 
 @RestController
@@ -17,17 +21,14 @@ public class GameController {
 
     // instanciation du service pour gérer la logique de jeu
     @Autowired
-    private GameService gameService;
+    private GameServiceImpl gameService;
 
     // methode pour créer une partie
-    @PostMapping("/")
-    public ResponseEntity<GameDto> createGame(@RequestHeader("X-UserId") String userId, @RequestBody TypeDto typeDto) {
-
-        gameService.setCurrentPlayerId(userId);
+    @PostMapping
+    public ResponseEntity<ArrayList<Game>> createGame(@RequestHeader("X-UserId") UUID userId, @RequestBody TypeDto typeDto) {
 
         // on crée le jeu
-        GameDto result = gameService.createGame(userId, typeDto);
-
+        ArrayList<Game> result = gameService.createGame(userId, typeDto);
         if (result == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         } else {
@@ -36,59 +37,12 @@ public class GameController {
         }
     }
 
-    // methode pour afficher l'hystorique
-    @GetMapping
-    public ResponseEntity<List<GameDto>> getAllGames(GameFilterDto filter, @RequestHeader("X-UserId") String userId) {
-        // liste des parties
-        List<GameDto> allGames = gameService.getAllGamesForUsers(userId);
+    @GetMapping("/ongoing")
+    public ResponseEntity<List<Game>> getAllGamesForUser(@RequestHeader("X-UserId") UUID userId) {
 
-        List<GameDto> filteredGames = allGames;
-        if (filter.ended() != null) {
-            filteredGames = allGames.stream().filter(game -> Boolean.valueOf(game.ended()) == filter.ended()).collect(Collectors.toList());
-        }
+            List<Game> allGamesForUser = gameService.getGamesByStatusOnGoing(userId);
 
-        return ResponseEntity.ok(filteredGames);
+        return ResponseEntity.ok(allGamesForUser);
     }
 
-    // methode pour afficher une partie
-    @GetMapping("/{gameId}")
-    public ResponseEntity<SingleGameDto> getGame(@PathVariable String gameId) {
-        GameDto game = gameService.getGame(gameId);
-        if (game == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        SingleGameDto singleGameDto = new SingleGameDto(game.gameId());
-        return ResponseEntity.ok(singleGameDto);
-    }
-
-    // methode pour afficher les coups possibles
-//    @GetMapping("/{gameId}/moves")
-//    public ResponseEntity<MovesDto> getPossibleMoves(@PathVariable String gameId) {
-//        GameDto game = gameService.getGame(gameId);
-//        if (game == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        List<MoveDto> possibleMoves = gameService.calculatePossiblesMoves(game);
-//
-//        MovesDto movesDto = new MovesDto(possibleMoves);
-//        return ResponseEntity.ok(movesDto);
-//    }
-
-    // methode pour jouer un coup
-//    @PutMapping("/{gameId}/moves")
-//    public ResponseEntity<GameDto> makeMove(@PathVariable String gameId, @RequestBody MoveDto moveDto, @RequestHeader("X-UserId") String userId) {
-//        try {
-//
-//            GameDto updatedGame = gameService.makeMove(gameId, moveDto, userId);
-//
-//            if (updatedGame != null) {
-//                return ResponseEntity.ok(updatedGame);
-//            } else {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//        }
-//    }
 }
