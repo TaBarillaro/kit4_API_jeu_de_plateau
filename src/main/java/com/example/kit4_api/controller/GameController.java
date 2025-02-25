@@ -45,4 +45,10 @@ public class GameController {
         return ResponseEntity.ok(allGamesForUser);
     }
 
+    @GetMapping("/{gameId}")
+    public ResponseEntity<Game> getGame(@PathVariable("gameId") UUID gameId) {
+        Game currentGame = gameService.getGameById(gameId);
+        return ResponseEntity.ok(currentGame);
+    }
+
 }

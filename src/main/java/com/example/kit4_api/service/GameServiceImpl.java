@@ -20,6 +20,7 @@ public class GameServiceImpl implements GameService {
 
     @Autowired
     private GameDao gameDao;
+
     private final ArrayList<Game> games = new ArrayList<>();
 
     public ArrayList<Game> createGame(UUID userId, TypeDto typeDto) {
@@ -35,7 +36,7 @@ public class GameServiceImpl implements GameService {
                 gameFactory = new TicTacToeGameFactory();
                 game = gameFactory.createGame(typeDto.boardSize(), playersIds);
                 break;
-            case "connectFour":
+            case "ConnectFour":
                 playersIds.add(typeDto.opponentId());
                 gameFactory = new ConnectFourGameFactory();
                 game = gameFactory.createGame(typeDto.boardSize(), playersIds);
@@ -52,9 +53,7 @@ public class GameServiceImpl implements GameService {
         }
 //        return gameFactory.createGame(typeDto.playerCount(), typeDto.boardSize());
         return games;
-
     }
-
 
 
     @Override
@@ -64,12 +63,13 @@ public class GameServiceImpl implements GameService {
                 .filter(game -> game.getStatus().equals(GameStatus.ONGOING)).collect(Collectors.toList());
     }
 
-//    @Override
-//    public List<GameDto> getGamesByStatus(GameStatus gameStatus, UUID userId) {
-//        return gameDao.findAll()
-//                .stream()
-//                .filter(game -> gameStatus.equals(game.getStatus()) && game.getPlayerIds().contains(userId))
-//                        .map(game -> new GameDto(game.getId().toString(), game.getFactoryId(), game.getPlayerIds(), game.getCurrentPlayerId()))
-//                .collect(Collectors.toList());
-//    }
+    @Override
+    public Game getGameById(UUID gameId) {
+        return games
+                .stream()
+                .filter(game -> game.getId().equals(gameId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Game not found or you are not the current player"));
+    }
+
 }
