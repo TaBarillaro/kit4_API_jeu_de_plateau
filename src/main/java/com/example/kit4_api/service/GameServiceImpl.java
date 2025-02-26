@@ -1,7 +1,6 @@
 package com.example.kit4_api.service;
 
-import com.example.kit4_api.dao.GameDao;
-import com.example.kit4_api.dto.GameDto;
+import com.example.kit4_api.dao.InMemoryGameDao;
 import com.example.kit4_api.dto.TypeDto;
 import fr.le_campus_numerique.square_games.engine.Game;
 import fr.le_campus_numerique.square_games.engine.GameFactory;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 public class GameServiceImpl implements GameService {
 
     @Autowired
-    private GameDao gameDao;
+    private InMemoryGameDao gameDao;
 
     private final ArrayList<Game> games = new ArrayList<>();
 
@@ -51,20 +50,19 @@ public class GameServiceImpl implements GameService {
         if (game != null) {
             games.add(game);
         }
-//        return gameFactory.createGame(typeDto.playerCount(), typeDto.boardSize());
         return games;
     }
 
 
     @Override
-    public List<Game> getGamesByStatusOnGoing(UUID userId) {
+    public List<Game> getGamesByStatusOnGoing(String userId) {
         return games
                 .stream()
                 .filter(game -> game.getStatus().equals(GameStatus.ONGOING)).collect(Collectors.toList());
     }
 
     @Override
-    public Game getGameById(UUID gameId) {
+    public Game getGameById(String gameId) {
         return games
                 .stream()
                 .filter(game -> game.getId().equals(gameId))

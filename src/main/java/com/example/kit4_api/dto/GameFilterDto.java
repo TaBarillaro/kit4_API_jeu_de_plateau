@@ -1,4 +1,6 @@
 package com.example.kit4_api.dto;
 
-public record GameFilterDto(Boolean ended, String userId) {
+import java.util.UUID;
+
+public record GameFilterDto(Boolean ended, UUID userId) {
 }
