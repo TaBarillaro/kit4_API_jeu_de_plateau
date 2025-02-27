@@ -26,7 +26,6 @@ public class GameController {
     public ArrayList<Game> createGame(@RequestHeader("X-UserId") UUID userId, @RequestBody TypeDto request) {
 
         if(!userServiceImpl.getUserById(userId)) {
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             throw new IllegalArgumentException("User not found");
         }
 
@@ -39,7 +38,7 @@ public class GameController {
     }
 
     @GetMapping("/ongoing")
-    public ResponseEntity<List<Game>> getAllGamesForUser(@RequestHeader("X-UserId") String userId) {
+    public ResponseEntity<List<Game>> getAllGamesForUser(@RequestHeader("X-UserId") UUID userId) {
 
             List<Game> allGamesForUser = gameService.getGamesByStatusOnGoing(userId);
 
@@ -47,7 +46,7 @@ public class GameController {
     }
 
     @GetMapping("/{gameId}")
-    public ResponseEntity<Game> getGame(@PathVariable("gameId") String gameId) {
+    public ResponseEntity<Game> getGame(@PathVariable("gameId") UUID gameId) {
         Game currentGame = gameService.getGameById(gameId);
         return ResponseEntity.ok(currentGame);
     }

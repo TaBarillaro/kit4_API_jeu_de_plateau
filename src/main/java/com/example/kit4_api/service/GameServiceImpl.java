@@ -48,26 +48,30 @@ public class GameServiceImpl implements GameService {
                 throw new IllegalStateException("Unsupported game type");
         }
         if (game != null) {
-            games.add(game);
+//            games.add(game);
+            gameDao.upsert(game);
         }
-        return games;
+//        return games;
+        return new ArrayList<>(gameDao.findAll());
     }
 
 
     @Override
-    public List<Game> getGamesByStatusOnGoing(String userId) {
-        return games
+    public List<Game> getGamesByStatusOnGoing(UUID userId) {
+//        return games
+        return gameDao.findAll()
                 .stream()
                 .filter(game -> game.getStatus().equals(GameStatus.ONGOING)).collect(Collectors.toList());
     }
 
     @Override
-    public Game getGameById(String gameId) {
-        return games
-                .stream()
-                .filter(game -> game.getId().equals(gameId))
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Game not found or you are not the current player"));
+    public Game getGameById(UUID gameId) {
+//        return games
+        return gameDao.findById(gameId).orElseThrow(() -> new IllegalStateException("Game not found or you are not the current player"));
+//                .stream()
+//                .filter(game -> game.getId().equals(gameId))
+//                .findFirst()
+//                .orElseThrow(() -> new IllegalStateException("Game not found or you are not the current player"));
     }
 
 }

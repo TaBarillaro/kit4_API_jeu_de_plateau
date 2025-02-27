@@ -9,10 +9,27 @@ import java.util.*;
 @Repository
 @Primary
 public class InMemoryGameDao implements GameDao {
-    private Set<Game> games = new HashSet<>();
+//    private Set<Game> games = new HashSet<>();
+private final Map<String, Game> games = new HashMap<>();
 
     @Override
     public Collection<Game> findAll() {
-        return games;
+        return games.values();
+    }
+
+    @Override
+    public Optional<Game> findById(UUID gameId) {
+        return Optional.ofNullable(games.get(gameId));
+    }
+
+    @Override
+    public Game upsert(Game game) {
+        games.put(String.valueOf(game.getId()), game);
+        return game;
+    }
+
+    @Override
+    public void delete(UUID gameId) {
+        games.remove(gameId);
     }
 }

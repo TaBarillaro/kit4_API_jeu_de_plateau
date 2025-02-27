@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface GameService {
     ArrayList<Game> createGame(UUID userId, TypeDto typeDto);
-    List<Game> getGamesByStatusOnGoing(String userId);
-    Game getGameById(String gameId);
+    List<Game> getGamesByStatusOnGoing(UUID userId);
+    Game getGameById(UUID gameId);
 }
