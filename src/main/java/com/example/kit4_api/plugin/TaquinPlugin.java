@@ -1,8 +1,7 @@
 package com.example.kit4_api.plugin;
 
-import com.sun.source.util.Plugin;
 import fr.le_campus_numerique.square_games.engine.Game;
-import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory;
+import fr.le_campus_numerique.square_games.engine.taquin.TaquinGameFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -11,31 +10,30 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Component
-public class TicTacToePlugin implements GamePlugin {
+public class TaquinPlugin implements GamePlugin{
 
-    private final TicTacToeGameFactory ticTacToeGameFactory;
+    private final TaquinGameFactory taquinGameFactory;
     private final MessageSource messageSource;
 
-    // constructeur
-    public TicTacToePlugin(MessageSource messageSource) {
-        this.ticTacToeGameFactory = new TicTacToeGameFactory();
+    public TaquinPlugin(MessageSource messageSource) {
+        this.taquinGameFactory = new TaquinGameFactory();
         this.messageSource = messageSource;
     }
 
-    @Value("${game.tictactoe.default-player-count:2}")
+    @Value("${game.taquin.default-player-count:2}")
     private int defaultPlayerCount;
 
-    @Value("${game.tictactoe.default-board-size:3}")
+    @Value("${game.taquin.default-board-size:4}")
     private int defaultBoardSize;
 
     @Override
     public String getName(Locale locale) {
-        return messageSource.getMessage("game.tictactoe.name", null, locale);
+        return messageSource.getMessage("game.taquin.name", null, locale);
     }
 
     @Override
     public Game createGame(Optional<Integer> playerCount, Optional<Integer> boardSize) {
-        return ticTacToeGameFactory.createGame(
+        return taquinGameFactory.createGame(
                 playerCount.orElse(defaultPlayerCount),
                 boardSize.orElse(defaultBoardSize)
         );
