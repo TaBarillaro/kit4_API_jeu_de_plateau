@@ -2,6 +2,7 @@ package com.example.kit4_api.service;
 
 import com.example.kit4_api.dao.InMemoryGameDao;
 import com.example.kit4_api.dto.TypeDto;
+import com.example.kit4_api.plugin.GamePlugin;
 import fr.le_campus_numerique.square_games.engine.Game;
 import fr.le_campus_numerique.square_games.engine.GameFactory;
 import fr.le_campus_numerique.square_games.engine.GameStatus;
@@ -17,10 +18,18 @@ import java.util.stream.Collectors;
 @Service
 public class GameServiceImpl implements GameService {
 
+    private final GamePlugin gamePlugin;
+
+    public GameServiceImpl(GamePlugin gamePlugin) {
+        this.gamePlugin = gamePlugin;
+    }
+
     @Autowired
     private InMemoryGameDao gameDao;
 
-    private final ArrayList<Game> games = new ArrayList<>();
+//    private final ArrayList<Game> games = new ArrayList<>();
+
+
 
     public ArrayList<Game> createGame(UUID userId, TypeDto typeDto) {
         GameFactory gameFactory;
