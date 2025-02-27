@@ -29,10 +29,10 @@ public class GameController {
             throw new IllegalArgumentException("User not found");
         }
 
-        UUID opponent = request.opponentId();
+//        UUID opponent = request.opponentId();
 
-        Set<UUID> playerIds = new HashSet<>();
-        playerIds.add(userId);
+//        Set<UUID> playerIds = new HashSet<>();
+//        playerIds.add(userId);
 
         return gameService.createGame(userId, request);
     }

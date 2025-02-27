@@ -18,50 +18,61 @@ import java.util.stream.Collectors;
 @Service
 public class GameServiceImpl implements GameService {
 
-    private final GamePlugin gamePlugin;
-
-    public GameServiceImpl(GamePlugin gamePlugin) {
-        this.gamePlugin = gamePlugin;
-    }
 
     @Autowired
     private InMemoryGameDao gameDao;
 
+    private final List<GamePlugin> gamePlugins;
+
+    public GameServiceImpl(List<GamePlugin> gamePlugins) {
+        this.gamePlugins = gamePlugins;
+    }
+
 //    private final ArrayList<Game> games = new ArrayList<>();
 
 
-
     public ArrayList<Game> createGame(UUID userId, TypeDto typeDto) {
-        GameFactory gameFactory;
+//        GameFactory gameFactory;
 
         Set<UUID> playersIds = new HashSet<>();
         playersIds.add(userId);
         Game game = null;
 
-        switch (typeDto.gameType()) {
-            case "TicTacToe":
-                playersIds.add(typeDto.opponentId());
-                gameFactory = new TicTacToeGameFactory();
-                game = gameFactory.createGame(typeDto.boardSize(), playersIds);
+        for (GamePlugin plugin : gamePlugins) {
+            if (plugin.getName(Locale.ENGLISH).equalsIgnoreCase(typeDto.gameType())) {
+                game = plugin.createGame(Optional.of(playersIds.size()),  Optional.ofNullable(typeDto.boardSize()));
                 break;
-            case "ConnectFour":
-                playersIds.add(typeDto.opponentId());
-                gameFactory = new ConnectFourGameFactory();
-                game = gameFactory.createGame(typeDto.boardSize(), playersIds);
-                break;
-            case "15 puzzle":
-                gameFactory = new TaquinGameFactory();
-                game = gameFactory.createGame(typeDto.boardSize(), playersIds);
-                break;
-            default:
-                throw new IllegalStateException("Unsupported game type");
+            };
         }
-        if (game != null) {
-//            games.add(game);
-            gameDao.upsert(game);
+        if (game == null) {
+            throw new IllegalStateException("No games found");
         }
-//        return games;
+        gameDao.upsert(game);
+
         return new ArrayList<>(gameDao.findAll());
+
+//        switch (typeDto.gameType()) {
+//            case "TicTacToe":
+//                playersIds.add(typeDto.opponentId());
+//                gameFactory = new TicTacToeGameFactory();
+//                game = gameFactory.createGame(typeDto.boardSize(), playersIds);
+//                break;
+//            case "ConnectFour":
+//                playersIds.add(typeDto.opponentId());
+//                gameFactory = new ConnectFourGameFactory();
+//                game = gameFactory.createGame(typeDto.boardSize(), playersIds);
+//                break;
+//            case "15 puzzle":
+//                gameFactory = new TaquinGameFactory();
+//                game = gameFactory.createGame(typeDto.boardSize(), playersIds);
+//                break;
+//            default:
+//                throw new IllegalStateException("Unsupported game type");
+//        }
+//        if (game != null) {
+//            gameDao.upsert(game);
+//        }
+//        return new ArrayList<>(gameDao.findAll());
     }
 
 
