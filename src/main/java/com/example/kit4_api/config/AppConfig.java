@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
-//@ComponentScan(basePackages = "com.example.kit4_api")
 public class AppConfig {
 
    @Bean
