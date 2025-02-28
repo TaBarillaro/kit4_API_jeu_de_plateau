@@ -33,9 +33,9 @@ public class GameServiceImpl implements GameService {
 //    private final ArrayList<Game> games = new ArrayList<>();
 
     @Override
-    public Collection<String> getGameIdentifier() {
+    public Collection<String> getGameIdentifier(Locale locale) {
         return gamePlugins.stream()
-                .map(gamePlugins -> gamePlugins.getName(Locale.getDefault()))
+                .map(gamePlugins -> gamePlugins.getName(locale))
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +48,7 @@ public class GameServiceImpl implements GameService {
         Game game = null;
 
         for (GamePlugin plugin : gamePlugins) {
-            if (plugin.getName(Locale.ENGLISH).equalsIgnoreCase(typeDto.gameType())) {
+            if (plugin.getName(Locale.getDefault()).equalsIgnoreCase(typeDto.gameType())) {
                 game = plugin.createGame(Optional.of(playersIds.size()),  Optional.ofNullable(typeDto.boardSize()));
                 break;
             };

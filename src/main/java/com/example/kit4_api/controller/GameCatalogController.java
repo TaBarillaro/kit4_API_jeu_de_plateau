@@ -25,29 +25,11 @@ public class GameCatalogController {
     @Autowired
     private GameServiceImpl gameServiceImpl;
 
-//    private List<GamePlugin> gamePlugins;
-//
-//    public GameCatalogController(List<GamePlugin> gamePlugins) {
-//        this.gamePlugins = gamePlugins;
-//    }
-
-//    @GetMapping("/info")
-//    public ResponseEntity<List<GameInfoDto>> getGameInfo(@RequestHeader("Accept-Language") String language) {
-//        // on met la langue demandé dans le header
-//        Locale locale = Locale.forLanguageTag(language);
-//
-//        // on crée une liste de GameInfoDto pour retourner les infos sur les jeux
-//        List<GameInfoDto> gameInfoList = gamePlugins.stream()
-//                .map(plugin -> new GameInfoDto(plugin.getName(locale)))  // on utilise le plugin pour retrouver la lingue correcte
-//                .collect(Collectors.toList());
-//
-//        return ResponseEntity.ok(gameInfoList);
-//    }
 
     @GetMapping("/identifiers")
     public Collection<String> getGameIdentifiers(@RequestHeader("Accept-Language") Locale locale) {
 
-        return gameServiceImpl.getGameIdentifier();
+        return gameServiceImpl.getGameIdentifier(locale);
     }
 
 

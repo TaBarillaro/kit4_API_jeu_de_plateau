@@ -2,14 +2,12 @@ package com.example.kit4_api.service;
 
 import com.example.kit4_api.dto.TypeDto;
 import fr.le_campus_numerique.square_games.engine.Game;
+import org.springframework.cglib.core.Local;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public interface GameService {
-    Collection<String> getGameIdentifier();
+    Collection<String> getGameIdentifier(Locale locale);
 
     ArrayList<Game> createGame(UUID userId, TypeDto typeDto);
     List<Game> getGamesByStatusOnGoing(UUID userId);
