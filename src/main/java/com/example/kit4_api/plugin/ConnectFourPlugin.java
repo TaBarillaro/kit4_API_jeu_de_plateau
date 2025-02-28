@@ -13,17 +13,18 @@ import java.util.Optional;
 public class ConnectFourPlugin implements GamePlugin {
 
     private final ConnectFourGameFactory connectFourGameFactory;
-    private final MessageSource messageSource;
+
+    private MessageSource messageSource;
 
     public ConnectFourPlugin(MessageSource messageSource) {
         this.connectFourGameFactory = new ConnectFourGameFactory();
         this.messageSource = messageSource;
     }
 
-    @Value("${game.connectfour.default-player-count:2}")
+    @Value("${game.connectfour.default-player-count}")
     private int defaultPlayerCount;
 
-    @Value("${game.connectfour.default-board-size:7}")
+    @Value("${game.connectfour.default-board-size}")
     private int defaultBoardSize;
 
     @Override

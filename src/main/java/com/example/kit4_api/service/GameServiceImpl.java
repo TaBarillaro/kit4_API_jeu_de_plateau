@@ -1,15 +1,13 @@
 package com.example.kit4_api.service;
 
+import com.example.kit4_api.dao.GameDao;
 import com.example.kit4_api.dao.InMemoryGameDao;
 import com.example.kit4_api.dto.TypeDto;
 import com.example.kit4_api.plugin.GamePlugin;
 import fr.le_campus_numerique.square_games.engine.Game;
-import fr.le_campus_numerique.square_games.engine.GameFactory;
 import fr.le_campus_numerique.square_games.engine.GameStatus;
-import fr.le_campus_numerique.square_games.engine.connectfour.ConnectFourGameFactory;
-import fr.le_campus_numerique.square_games.engine.taquin.TaquinGameFactory;
-import fr.le_campus_numerique.square_games.engine.tictactoe.TicTacToeGameFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -18,17 +16,28 @@ import java.util.stream.Collectors;
 @Service
 public class GameServiceImpl implements GameService {
 
+//    @Autowired
+//    private MessageSource messageSource;
+    @Autowired
+    private GameDao gameDao;
 
     @Autowired
-    private InMemoryGameDao gameDao;
+    private List<GamePlugin> gamePlugins;
 
-    private final List<GamePlugin> gamePlugins;
+//    public GameServiceImpl(List<GamePlugin> gamePlugins) {
+//        this.gamePlugins = gamePlugins;
+//    }
 
-    public GameServiceImpl(List<GamePlugin> gamePlugins) {
-        this.gamePlugins = gamePlugins;
-    }
+
 
 //    private final ArrayList<Game> games = new ArrayList<>();
+
+    @Override
+    public Collection<String> getGameIdentifier() {
+        return gamePlugins.stream()
+                .map(gamePlugins -> gamePlugins.getName(Locale.getDefault()))
+                .collect(Collectors.toList());
+    }
 
 
     public ArrayList<Game> createGame(UUID userId, TypeDto typeDto) {

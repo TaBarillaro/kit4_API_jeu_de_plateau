@@ -13,7 +13,7 @@ import java.util.Optional;
 public class TicTacToePlugin implements GamePlugin {
 
     private final TicTacToeGameFactory ticTacToeGameFactory;
-    private final MessageSource messageSource;
+    private MessageSource messageSource;
 
     // constructeur
     public TicTacToePlugin(MessageSource messageSource) {
@@ -21,10 +21,10 @@ public class TicTacToePlugin implements GamePlugin {
         this.messageSource = messageSource;
     }
 
-    @Value("${game.tictactoe.default-player-count:2}")
+    @Value("${game.tictactoe.default-player-count}")
     private int defaultPlayerCount;
 
-    @Value("${game.tictactoe.default-board-size:3}")
+    @Value("${game.tictactoe.default-board-size}")
     private int defaultBoardSize;
 
     @Override

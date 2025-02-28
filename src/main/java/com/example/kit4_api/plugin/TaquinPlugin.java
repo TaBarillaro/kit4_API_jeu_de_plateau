@@ -13,17 +13,17 @@ import java.util.Optional;
 public class TaquinPlugin implements GamePlugin{
 
     private final TaquinGameFactory taquinGameFactory;
-    private final MessageSource messageSource;
+    private MessageSource messageSource;
 
     public TaquinPlugin(MessageSource messageSource) {
         this.taquinGameFactory = new TaquinGameFactory();
         this.messageSource = messageSource;
     }
 
-    @Value("${game.taquin.default-player-count:2}")
+    @Value("${game.taquin.default-player-count}")
     private int defaultPlayerCount;
 
-    @Value("${game.taquin.default-board-size:4}")
+    @Value("${game.taquin.default-board-size}")
     private int defaultBoardSize;
 
     @Override
